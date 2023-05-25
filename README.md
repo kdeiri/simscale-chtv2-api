@@ -3,7 +3,7 @@ The main goal of this code is to demonstrate how to run conjugate heat transfer 
 
 The repository already contains a working example that can be used for testing. The example is of a cold cooling plate for a battery system. 
 
-This code should serve the purpose of showing: 
+This code should serve the purpose of showing: (All the functions can be found in the utilities.py file) 
 1. How to setup the API connection. 
 2. How to create a project and upload geometries 
 3. How to retrieve entity IDs of parts and surfaces, so that they can be used for assignmnet of boundary conditions, advanced concepts, etc.
