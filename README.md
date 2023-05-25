@@ -1,7 +1,7 @@
 # SimScale_CHTv2
 The main goal of this code is to demonstrate how to run conjugate heat transfer (CHTv2) simulations on SimScale via the API. 
 
-The repository already contains a working example that can be used for testing. 
+The repository already contains a working example that can be used for testing. The example is of a cold cooling plate for a battery system. 
 
 This code should serve the purpose of showing: 
 1. How to setup the API connection. 
