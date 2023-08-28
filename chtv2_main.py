@@ -65,6 +65,12 @@ cht.external_wall_heat_flux_bc(method = 'FIXED_POWER', power = 2000, key_list = 
 
 cht.set_boundary_conditions()
 
+# Create Geometry primitive
+box_uuid = cht.set_cartesian_box_geometry_primitive(min_x = 0, min_y = 0, min_z = 0,
+                                                    max_x = 0.1, max_y = 0.1, max_z = 0.1,
+                                                    name= "box")
+
+
 #-----------------------------
 #Define Simulation Control Settings
 cht.set_simulation_end_time(time = 1000)
@@ -96,6 +102,8 @@ cht.add_solid_material(solid_name = 'Aluminium', key_list = ['tool_body'])
 #Mesh settings
 cht.set_mesh_layer_settings(num_of_layers = 3, total_rel_thickness = 0.4, growth_rate = 1.5)
 cht.set_advanced_mesh_settings(small_feature_tolerance = 5E-5, gap_ref_factor = 0.05, gradation_rate = 1.22)
+cht.set_local_element_size_refinement(max_element_size= 0.001, name = 'testref', key_list = ['battery_load'])
+cht.set_mesh_region_refinement(max_element_size= 0.002, name = "region", key_list= ['tool_body'], geo_primitive_ids= [box_uuid])
 cht.complete_mesh_settings(mesh_name = "Mesh_test", fineness = 0.1, physics_based_meshing = True)
 cht.estimate_mesh_operation()
 cht.start_meshing_operation(run_state = False)
@@ -160,6 +168,15 @@ cht.start_simulation_run(wait_for_results = False)
 #                          key_list = [], geo_primitive_ids = cylinder1_uuid )
 
 # cht.set_advanced_concepts()
+
+
+"""example: Mesh refinements"""
+#Region refinement 
+
+
+#Local refinement 
+
+
 
 """example: download results"""
 # cht.find_simulation("chtv2_api")

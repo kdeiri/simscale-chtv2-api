@@ -1765,7 +1765,7 @@ class ConjugateHeatTransfer():
             in this case, you are supplying a list of the keys that points 
             to the parts that are expected to be assigned a certain material 
             
-        geo_primitive_ids: str 
+        geo_primitive_ids: list 
             
             a pointer to the geometry primitive to be used for assignment 
             (geometry primitive uuid is what you need to pass here)
@@ -2407,6 +2407,78 @@ class ConjugateHeatTransfer():
             			),
             		))
         
+    def set_mesh_region_refinement(self, max_element_size ,name = '', key_list = [], geo_primitive_ids = [] ):
+        
+        '''
+        add a region refinement to a part/volume
+        
+        Parameters
+        ----------
+        
+        max_element_size: int or float 
+            
+            maximum edge length for the mesh elements.
+            decide on a value based on the size of the edges you are trying to refine.
+            
+        name: str  
+        
+            name of the local mesh refinement 
+                
+        key_list : list
+        
+            the desired faces/parts for later topological assignment are stored 
+            in a dict. each face/part has a specific user defined key, that is 
+            passed to this function. In the end, this key would point to the 
+            desired entitiy id of a face/part.
+            
+            in this case, you are supplying a list of the keys that points 
+            to the parts that are expected to be assigned a certain material 
+              
+        geo_primitive_ids: list 
+            
+            a pointer to the geometry primitive to be used for assignment 
+            (geometry primitive uuid is what you need to pass here)        
+            
+        Returns
+        -------
+        None. 
+        
+        '''    
+        
+        #assign parts
+        bodies_to_assign = []
+        for key in key_list:
+            bodies_to_assign.append(self.single_entity[key])
+                    
+        
+        #assign geometry primitives
+        geometry_primitives_to_assign = []
+        for primitive_uuid in geo_primitive_ids:
+            
+            geometry_primitives_to_assign.append(primitive_uuid)
+
+            
+        self.mesh_refinement.append(
+            sim_sdk.RegionRefinementWithLength(
+                type="REGION_LENGTH",
+                name=name,
+                refinement=sim_sdk.InsideRegionRefinementWithLength(
+                    length=sim_sdk.DimensionalLength(
+                        value= max_element_size,
+                        unit="m"
+                    ),
+                ),
+                
+            	topological_reference= sim_sdk.TopologicalReference(
+            				entities= bodies_to_assign,
+            				sets=[]
+                            ,)
+               ,
+              
+                geometry_primitive_uuids= geometry_primitives_to_assign
+                    )
+                )
+
     def estimate_mesh_operation(self):
         
         '''
